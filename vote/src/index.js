@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Statistics } from './Statistics'
+import { Statistics } from './components/Statistics'
 
 const App = () => {
   // save clicks of each button to its own state
@@ -33,7 +33,6 @@ const App = () => {
     setAverage(average-1)
     setPositive(((good)*100)/(all+1))
   }
-
 
   return (
     <div>
