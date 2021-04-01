@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+const max = (prev, current) => {
+  return (prev.vote > current.vote) ? prev : current
+}
+
 const App = (props) => {
-  const [selected, setSelected] = useState(0)
   const [data, setData] = useState(props.anecdotes)
-  const getRandomInt = (min, max) => {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
+  const [selected, setSelected] = useState(getRandomInt(0, data.length))
+  const [mostVoted, setMostVoted] = useState(data[selected])
 
   const handleClickGenerate = () => {
-    const random = getRandomInt(0, props.anecdotes.length)
+    const random = getRandomInt(0, data.length)
     setSelected(random)
   }
 
@@ -17,14 +22,39 @@ const App = (props) => {
     let newArr = [...data]
     newArr[selected].vote += 1
     setData(newArr)
+
+    const maxVote = newArr.reduce(max)
+    setMostVoted(maxVote)
+    console.log(maxVote);
   }
+
 
   return (
     <div>
-      {data[selected].anecdote}
-      {data[selected].vote}
-      <button onClick={handleClickVote}>Vote</button>
-      <button onClick={handleClickGenerate}>Generate anecdotes</button>
+      <div>
+        <h1>Anecdote of the day</h1>
+        <div>
+          <p>
+            {data[selected].anecdote}
+          </p>
+          <p>
+            Has {data[selected].vote}
+          </p>
+        </div>
+        <div>
+          <button onClick={handleClickVote}>Vote</button>
+          <button onClick={handleClickGenerate}>Generate anecdotes</button>
+        </div>
+      </div>
+      <div>
+        <h1>Anecdote with most votes</h1>
+          <p>
+            {mostVoted.anecdote}
+          </p>
+          <p>
+            Has {mostVoted.vote}
+          </p>
+      </div>
     </div>
   )
 }
